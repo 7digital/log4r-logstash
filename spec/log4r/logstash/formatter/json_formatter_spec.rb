@@ -50,5 +50,17 @@ describe Log4r::Logstash::JsonFormatter do
       json = Log4r::Logstash::JsonFormatter.format(logevent, index, nil, nil, additional_fields)
       expect(json).to include('"foo":"' + r + '"')
     end
+
+    it "evaluates lambdas multiple times" do
+      r = "one"
+      additional_fields = {}
+      additional_fields["foo"] = -> { r }
+      json = Log4r::Logstash::JsonFormatter.format(logevent, index, nil, nil, additional_fields)
+      expect(json).to include('"foo":"one"')
+
+      r = "two"
+      json = Log4r::Logstash::JsonFormatter.format(logevent, index, nil, nil, additional_fields)
+      expect(json).to include('"foo":"two"')
+    end
   end
 end

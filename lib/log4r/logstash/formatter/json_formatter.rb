@@ -19,10 +19,7 @@ module Log4r
       end
 
       def self.eval_map_proc_values(map)
-        map.each do |key, value|
-          map[key] = value.call if value.class == Proc
-        end
-        map
+        map.map { |key, value| [key, value.class == Proc ? value.call : value] }.to_h
       end
     end
   end
