@@ -6,10 +6,10 @@ require 'log4r/logstash/version'
 Gem::Specification.new do |spec|
   spec.name          = "log4r-logstash"
   spec.version       = Log4r::Logstash::VERSION
-  spec.authors       = ["Christopher Baldauf"]
-  spec.email         = ["cbaldauf@cimpress.com"]
+  spec.authors       = ["7digital/Christopher Baldauf"]
+  spec.email         = ["developers@7digital.com"]
   spec.summary       = %q{Ship json encoded log4r messages to logstash.}
-  spec.homepage      = "http://github.com/Cimpress-MCP/log4r-logstash"
+  spec.homepage      = "https://github.com/7digital/log4r-logstash"
   spec.license       = "Apache 2"
 
   spec.files         = `git ls-files -z`.split("\x0")
