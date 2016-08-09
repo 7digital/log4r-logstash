@@ -63,4 +63,17 @@ describe Log4r::Logstash::JsonFormatter do
       expect(json).to include('"foo":"two"')
     end
   end
+
+  describe "data fields" do
+    it "evaluates proc for extra data fields" do
+      data = { foo: "bar" }
+      data_fields = -> { data }
+      json = Log4r::Logstash::JsonFormatter.format(logevent, index, nil, nil, {}, data_fields)
+      expect(json).to include('"foo":"bar"')
+      data = { bing: "bong" }
+      json = Log4r::Logstash::JsonFormatter.format(logevent, index, nil, nil, {}, data_fields)
+      expect(json).to include('"bing":"bong"')
+      expect(json).not_to include('"foo":"bar"')
+    end
+  end
 end

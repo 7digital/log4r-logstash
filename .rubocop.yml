@@ -9,6 +9,9 @@ Metrics/LineLength:
 Style/Documentation:
   Enabled: false
 
+Style/ParameterLists:
+  Max: 6
+
 Metrics/MethodLength:
   Max: 20
 

@@ -7,7 +7,8 @@ module Log4r
       def self.format(logevent, index,
                       data_field_name = "data",
                       level_field_name = "level",
-                      additional_fields = {})
+                      additional_fields = {},
+                      data_proc = nil)
         data = {}
         data["type"] = logevent.class.to_s
         data["index"] = index.to_s
@@ -15,6 +16,7 @@ module Log4r
         data[level_field_name] = LNAMES[logevent.level]
         data[data_field_name] = logevent.data.force_encoding("UTF-8")
         data.merge! eval_map_proc_values(additional_fields)
+        data.merge! data_proc.call unless data_proc.nil?
         data.to_json
       end
 
