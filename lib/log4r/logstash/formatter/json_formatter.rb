@@ -5,11 +5,12 @@ module Log4r
   module Logstash
     class JsonFormatter
       def self.format(logevent, index,
-                     data_field_name = "data", level_field_name = "level",
-                     additional_fields = {})
+                      data_field_name = "data",
+                      level_field_name = "level",
+                      additional_fields = {})
         data = {}
-        data["type"] = "#{logevent.class}"
-        data["index"] = "#{index}"
+        data["type"] = logevent.class.to_s
+        data["index"] = index.to_s
         data["timestamp"] = Time.now.getutc.iso8601
         data[level_field_name] = LNAMES[logevent.level]
         data[data_field_name] = logevent.data.force_encoding("UTF-8")
