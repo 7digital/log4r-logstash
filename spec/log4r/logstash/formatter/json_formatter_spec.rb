@@ -33,45 +33,45 @@ describe Log4r::Logstash::JsonFormatter do
     end
   end
 
-  describe "additional fields" do
+  describe "fields" do
     it "include literals" do
-      additional_fields = {}
-      additional_fields["foo"] = "bar"
-      additional_fields["goo"] = "baz"
-      json = Log4r::Logstash::JsonFormatter.format(logevent, index, nil, nil, additional_fields)
+      fields = {}
+      fields["foo"] = "bar"
+      fields["goo"] = "baz"
+      json = Log4r::Logstash::JsonFormatter.format(logevent, index, nil, nil, fields)
       expect(json).to include('"foo":"bar"')
       expect(json).to include('"goo":"baz"')
     end
 
     it "evaluates lambdas" do
       r = SecureRandom.uuid
-      additional_fields = {}
-      additional_fields["foo"] = -> { r }
-      json = Log4r::Logstash::JsonFormatter.format(logevent, index, nil, nil, additional_fields)
+      fields = {}
+      fields["foo"] = -> { r }
+      json = Log4r::Logstash::JsonFormatter.format(logevent, index, nil, nil, fields)
       expect(json).to include('"foo":"' + r + '"')
     end
 
     it "evaluates lambdas multiple times" do
       r = "one"
-      additional_fields = {}
-      additional_fields["foo"] = -> { r }
-      json = Log4r::Logstash::JsonFormatter.format(logevent, index, nil, nil, additional_fields)
+      fields = {}
+      fields["foo"] = -> { r }
+      json = Log4r::Logstash::JsonFormatter.format(logevent, index, nil, nil, fields)
       expect(json).to include('"foo":"one"')
 
       r = "two"
-      json = Log4r::Logstash::JsonFormatter.format(logevent, index, nil, nil, additional_fields)
+      json = Log4r::Logstash::JsonFormatter.format(logevent, index, nil, nil, fields)
       expect(json).to include('"foo":"two"')
     end
   end
 
-  describe "data fields" do
-    it "evaluates proc for extra data fields" do
+  describe "additional fields" do
+    it "evaluates proc for extra fields" do
       data = { foo: "bar" }
-      data_fields = -> { data }
-      json = Log4r::Logstash::JsonFormatter.format(logevent, index, nil, nil, {}, data_fields)
+      additional_fields = -> { data }
+      json = Log4r::Logstash::JsonFormatter.format(logevent, index, nil, nil, {}, additional_fields)
       expect(json).to include('"foo":"bar"')
       data = { bing: "bong" }
-      json = Log4r::Logstash::JsonFormatter.format(logevent, index, nil, nil, {}, data_fields)
+      json = Log4r::Logstash::JsonFormatter.format(logevent, index, nil, nil, {}, additional_fields)
       expect(json).to include('"bing":"bong"')
       expect(json).not_to include('"foo":"bar"')
     end

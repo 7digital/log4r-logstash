@@ -12,6 +12,9 @@ Style/Documentation:
 Style/ParameterLists:
   Max: 6
 
+Style/CyclomaticComplexity:
+  Max: 7
+
 Metrics/MethodLength:
   Max: 20
 

@@ -11,11 +11,11 @@ module Log4r
         super(name, hash)
 
         @index = hash[:index] || "logstash"
-        @additional_fields = hash[:additional_fields] || {}
+        @fields = hash[:fields] || {}
         @data_field_name = hash[:data_field_name] || "data"
         @level_field_name = hash[:level_field_name] || "level"
         @timestamp_field_name = hash[:timestamp_field_name] || "timestamp"
-
+        @additional_fields = hash[:additional_fields] || nil
         init_redis(hash[:host], hash[:port])
       end
 
@@ -30,7 +30,7 @@ module Log4r
       def canonical_log(logevent)
         json = JsonFormatter.format(logevent, @index, @data_field_name,
                                     @level_field_name,
-                                    @additional_fields)
+                                    @fields, @additional_fields)
         tries = 3
         begin
           Retryable.retryable(tries: tries, sleep: ->(n) { 2**n }) do
